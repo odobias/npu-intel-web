@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#091f2c">
+  <meta name="description" content="Intel NPU: from capability to product — a page-by-page engineering presentation.">
+  <title>Intel NPU — from capability to product</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <svg class="icon-defs" aria-hidden="true" focusable="false">
+    <symbol id="icon-session" viewBox="0 0 48 48"><rect x="8" y="7" width="32" height="23" rx="3"></rect><path d="M14 36h20M18 41h12"></path><path d="M14 14h12M14 20h18"></path></symbol>
+    <symbol id="icon-device" viewBox="0 0 48 48"><rect x="13" y="13" width="22" height="22" rx="4"></rect><rect x="19" y="19" width="10" height="10" rx="1"></rect><path d="M18 4v7M24 4v7M30 4v7M18 37v7M24 37v7M30 37v7M4 18h7M4 24h7M4 30h7M37 18h7M37 24h7M37 30h7"></path></symbol>
+    <symbol id="icon-proof" viewBox="0 0 48 48"><path d="M8 39h32"></path><path d="M12 35V22h7v13M24 35V15h7v20"></path><path d="m10 13 5 5 11-11"></path></symbol>
+    <symbol id="icon-shape" viewBox="0 0 48 48"><rect x="12" y="14" width="24" height="20" rx="2"></rect><path d="M12 8h24M12 5v6M36 5v6M8 14v20M5 14h6M5 34h6"></path><path d="m21 24 3 3 6-7"></path></symbol>
+    <symbol id="icon-operators" viewBox="0 0 48 48"><path d="m13 12 11 12 11-12M13 36l11-12 11 12"></path><circle cx="13" cy="12" r="4"></circle><circle cx="35" cy="12" r="4"></circle><circle cx="24" cy="24" r="4"></circle><circle cx="13" cy="36" r="4"></circle><circle cx="35" cy="36" r="4"></circle></symbol>
+    <symbol id="icon-precision" viewBox="0 0 48 48"><rect x="8" y="13" width="32" height="22" rx="3"></rect><path d="M24 13v22M14 24h5M29 24h5"></path><circle cx="16" cy="24" r="3"></circle><circle cx="32" cy="24" r="3"></circle></symbol>
+    <symbol id="icon-clock" viewBox="0 0 48 48"><circle cx="20" cy="24" r="12"></circle><path d="M20 17v8l6 4M36 15v18M41 21v12"></path></symbol>
+    <symbol id="icon-host" viewBox="0 0 48 48"><rect x="13" y="8" width="22" height="32" rx="3"></rect><path d="M8 16h5M8 24h5M8 32h5M35 16h5M35 24h5M35 32h5"></path><circle cx="24" cy="19" r="4"></circle><path d="M19 30h10"></path></symbol>
+    <symbol id="icon-gate" viewBox="0 0 48 48"><path d="m9 26 8 8 22-22"></path><path d="M9 40h30"></path><path d="M12 20v-5M21 20v-8M30 20v-11M39 20v-14"></path></symbol>
+    <symbol id="icon-package" viewBox="0 0 48 48"><path d="m8 16 16-8 16 8v18l-16 8-16-8z"></path><path d="m8 16 16 8 16-8M24 24v18"></path><path d="M18 13h12"></path></symbol>
+  </svg>
+  <div class="presentation-stage" id="presentation-stage">
+  <header class="chrome" aria-label="Presentation controls">
+    <div class="brand"><span class="brand-mark">Gen</span><span class="brand-divider">/</span><span>Intel NPU</span></div>
+    <div class="chrome-actions">
+      <span class="live-status"><span class="status-dot"></span><span id="slide-label">01 / 13</span></span>
+      <button class="icon-button" id="notes-button" type="button" title="Toggle speaker notes (N)">Notes</button>
+      <button class="icon-button" id="fullscreen-button" type="button" title="Toggle fullscreen (F)">Fullscreen</button>
+    </div>
+  </header>
+
+  <main id="deck" aria-live="polite">
+    <section class="slide slide-dark active" data-title="Intel NPU" data-notes="Open with the conclusion: the capability was available, but the product contract had to be engineered. We will show the path from a successful session to measured, repeatable NPU execution—and the trade-offs we made visible for product." data-num="01">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow eyebrow-light">INTEL PLATFORM <span>·</span> ON-DEVICE AI</div>
+          <h1>Intel NPU</h1>
+          <p class="hero-title">from capability<br>to product</p>
+          <p class="hero-lede">Our journey from “can it run?” to a measured product path.</p>
+          <div class="hero-metrics">
+            <div class="metric metric-light"><strong>3</strong><span>model profiles<br>FakeAudio · TSC · Whisper static</span></div>
+            <div class="metric metric-purple"><strong>2</strong><span>executor paths<br>ORT / OpenVINO · Windows ML</span></div>
+            <div class="metric metric-green"><strong>0</strong><span>silent fallbacks accepted<br>assignment is part of proof</span></div>
+          </div>
+        </div>
+        <div class="hero-panel panel-light">
+          <div class="panel-kicker">INTEL LUNAR LAKE · X64</div>
+          <h2>A validated fast path</h2>
+          <div class="proof-flow">
+            <div class="proof-box"><svg class="card-icon" aria-hidden="true"><use href="#icon-clock"></use></svg><span class="proof-kicker">STATIC PROFILE</span><strong>205.6 ms</strong><span>Whisper static<br>WinML · AC mean</span></div>
+            <span class="flow-arrow">→</span>
+            <div class="proof-box proof-green"><svg class="card-icon" aria-hidden="true"><use href="#icon-device"></use></svg><span class="proof-kicker">ASSIGNMENT</span><strong>584/584</strong><span>FakeAudio split<br>ops on NPU</span></div>
+            <span class="flow-arrow green">→</span>
+            <div class="proof-check"><svg class="card-icon" aria-hidden="true"><use href="#icon-gate"></use></svg><span>proof passed</span></div>
+          </div>
+          <div class="panel-rule"></div>
+          <div class="panel-kicker">WHAT CHANGED</div>
+          <ul class="clean-list hero-list">
+            <li><i class="dot blue"></i>static export contracts</li>
+            <li><i class="dot purple"></i>graph boundaries + precision islands</li>
+            <li><i class="dot teal"></i>runtime choice with no silent fallback</li>
+          </ul>
+          <p class="panel-claim">A result is shippable when the device, the answer and the timings agree.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="The question" data-notes="A provider can accept a model and return correct results while assigning work to the CPU. The learning path was to separate session creation, device assignment, and proof of utilization." data-num="02">
+      <div class="section-heading">
+        <div class="eyebrow">THE QUESTION</div>
+        <h2>“It runs” is not the same as<br>“it runs on the NPU.”</h2>
+        <p>A session can succeed while work silently falls back to the CPU.</p>
+      </div>
+      <div class="steps-row">
+        <article class="step-card blue-card">
+          <div class="step-top"><span class="step-number">1</span><span class="step-tag blue-tag">session created</span></div>
+          <div class="step-visual"><svg class="card-icon" aria-hidden="true"><use href="#icon-session"></use></svg><div><strong>INPUT</strong><span>model + provider</span></div></div>
+          <h3>Create the session</h3>
+          <p>Load the model and select a provider. The session opening is only the starting point.</p>
+          <div class="step-result"><span>observed state</span><strong>session opens</strong></div>
+        </article>
+        <span class="card-arrow">→</span>
+        <article class="step-card purple-card">
+          <div class="step-top"><span class="step-number">2</span><span class="step-tag purple-tag">NPU assigned</span></div>
+          <div class="step-visual"><svg class="card-icon" aria-hidden="true"><use href="#icon-device"></use></svg><div><strong>DEVICE</strong><span>compiled subgraph</span></div></div>
+          <h3>Check assignment</h3>
+          <p>Read device assignment for the compiled subgraph. Verify expected ops are on the NPU—not CPU.</p>
+          <div class="step-result"><span>observed state</span><strong>NPU owns the work</strong></div>
+        </article>
+        <span class="card-arrow">→</span>
+        <article class="step-card teal-card">
+          <div class="step-top"><span class="step-number">3</span><span class="step-tag teal-tag">evidence recorded</span></div>
+          <div class="step-visual"><svg class="card-icon" aria-hidden="true"><use href="#icon-proof"></use></svg><div><strong>EVIDENCE</strong><span>drift + timing</span></div></div>
+          <h3>Prove utilization</h3>
+          <p>Compare with the CPU reference, then measure cold start, warm latency and throughput.</p>
+          <div class="step-result"><span>observed state</span><strong>evidence recorded</strong></div>
+        </article>
+      </div>
+      <div class="callout callout-blue"><strong>Proof starts after session creation.</strong><span>Check assignment · compare with CPU · measure cold and warm.</span></div>
+    </section>
+
+    <section class="slide" data-title="The contract" data-notes="This is the NPU contract we had to make explicit: fixed shapes, supported operators, a deliberate precision policy, and evidence of assignment. The manager-level point is that the accelerator is only useful when the model can be made repeatable. Definition of done is compile, NPU execution, CPU agreement, and packaging." data-num="03">
+      <div class="section-heading compact-heading">
+        <div class="eyebrow">THE CONTRACT</div>
+        <h2>The NPU is a compiler contract,<br>not a drop-in accelerator</h2>
+        <p>Every model has to earn a compiled subgraph—and a repeatable product path.</p>
+        <span class="floating-pill">OPENVINO EP · INTEL NPU</span>
+      </div>
+      <div class="contract-grid">
+        <article class="info-card blue-card"><span class="card-number">1</span><div class="info-visual"><svg class="card-icon" aria-hidden="true"><use href="#icon-shape"></use></svg><span>compile-time</span></div><h3>Shapes</h3><p>Export one operational profile: batch, sequence, cache length and memory plan are fixed before execution.</p></article>
+        <article class="info-card purple-card"><span class="card-number">2</span><div class="info-visual"><svg class="card-icon" aria-hidden="true"><use href="#icon-operators"></use></svg><span>supported vocabulary</span></div><h3>Operators</h3><p>Keep every path inside the compiler vocabulary; one unsupported pattern can split work to CPU or stop compilation.</p></article>
+        <article class="info-card teal-card"><span class="card-number">3</span><div class="info-visual"><svg class="card-icon" aria-hidden="true"><use href="#icon-precision"></use></svg><span>safe boundary</span></div><h3>Precision</h3><p>Protect sensitive math in FP32, then move only the stable boundary to FP16 or INT8.</p></article>
+        <article class="info-card amber-card"><span class="card-number">4</span><div class="info-visual"><svg class="card-icon" aria-hidden="true"><use href="#icon-proof"></use></svg><span>evidence</span></div><h3>Proof</h3><p>Capture assigned ops, drift versus CPU, and cold/warm timing; a green session alone proves nothing.</p></article>
+      </div>
+      <div class="definition"><strong>Definition of done</strong><span>compiles&nbsp; · &nbsp;runs on Intel NPU&nbsp; · &nbsp;agrees with CPU&nbsp; · &nbsp;survives packaging</span></div>
+    </section>
+
+    <section class="slide slide-technical" data-title="Static shapes" data-notes="Dynamic shapes are not just a software preference on current production NPU paths. The compiler has to commit memory sizes, layout, tiling, and kernels before execution. Supporting arbitrary shapes means specialization or recompilation; otherwise the provider must fall back. The product decision is to specialize once at export and make that profile explicit." data-num="04">
+      <div class="section-heading compact-heading">
+        <div class="eyebrow">THE FIRST REFACTOR</div>
+        <h2>Finding 1 · static shapes are the entry fee</h2>
+        <p>Fix the profile once so memory, layout, tiling and kernels can be committed before execution.</p>
+      </div>
+      <div class="shape-layout">
+        <article class="shape-card dynamic-card">
+          <div class="shape-title"><h3>Dynamic graph</h3><span>input-dependent shapes</span></div>
+          <div class="shape-visual danger"><svg class="card-icon" aria-hidden="true"><use href="#icon-shape"></use></svg><span>compiler uncertainty</span></div>
+          <h4>Why the NPU needs a fixed profile</h4>
+          <ul class="mini-list danger-list"><li>buffer sizes are compile-time decisions</li><li>layout, tiling and kernels depend on shape</li><li>otherwise recompile—or fall back to CPU</li></ul>
+          <strong class="target-no">NPU target: no</strong>
+        </article>
+        <div class="big-arrow">→</div>
+        <article class="shape-card static-card">
+          <div class="shape-title"><h3>Static profile</h3><span>pinned at export</span></div>
+          <div class="shape-visual safe"><svg class="card-icon" aria-hidden="true"><use href="#icon-shape"></use></svg><span>compiled<br>subgraph</span></div>
+          <p class="center-note">input + output +<br>cache length fixed</p>
+          <strong class="target-yes">NPU target: yes</strong>
+        </article>
+        <div class="big-arrow safe-arrow">→</div>
+        <div class="profile-stack">
+          <article class="profile-chip blue-edge"><strong>Whisper tiny.en</strong><code>mel [1,80,3000]</code><span>5.855 s clip</span></article>
+          <article class="profile-chip purple-edge"><strong>FakeAudio</strong><code>audio [1,308700]</code><span>7 s @ 44.1 kHz</span></article>
+          <article class="profile-chip teal-edge"><strong>Text Scam Classifier</strong><code>input_ids [1,512]</code><span>fixed sequence</span></article>
+          <div class="profile-warning">Dynamic Whisper KV stays outside this Intel NPU profile.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Graph boundaries" data-notes="FakeAudio became the proof that graph partitioning and precision policy belong together. We protected the FP32 log-mel front-end on CPU and sent the HTSAT backbone to Intel NPU. The boundary was the decisive fix." data-num="05">
+      <div class="section-heading compact-heading">
+        <div class="eyebrow">THE SECOND REFACTOR</div>
+        <h2>Finding 2 · graph boundaries made the difference</h2>
+        <p>FakeAudio became our proof that a model can be engineered around Intel’s compiler and precision limits.</p>
+      </div>
+      <div class="split-layout">
+        <article class="split-panel">
+          <h3>The validated split</h3>
+          <p class="muted">2,395 nodes · 5 nodes dominate the observed numerical drift</p>
+          <div class="pipeline">
+            <div class="pipeline-box amber-box"><svg class="card-icon" aria-hidden="true"><use href="#icon-precision"></use></svg><strong>FP32 log-mel</strong><span>CPU<br>protect the front-end</span></div>
+            <span class="pipeline-arrow">→</span>
+            <div class="pipeline-box blue-box"><svg class="card-icon" aria-hidden="true"><use href="#icon-device"></use></svg><strong>HTSAT backbone</strong><span>Intel NPU<br>OpenVINO EP</span></div>
+            <span class="pipeline-arrow teal-text">→</span>
+          </div>
+          <div class="safe-boundary">safe boundary</div>
+          <p class="split-claim">The graph boundary was the decisive FakeAudio fix—not a runtime switch.</p>
+        </article>
+        <div class="proof-column">
+          <article class="proof-card blue-card"><div class="proof-card-head"><svg class="card-icon" aria-hidden="true"><use href="#icon-device"></use></svg><h3>NPU assignment</h3></div><p>OpenVINO EP · Intel NPU</p><strong>584/584 <small>backbone ops on NPU</small></strong></article>
+          <article class="proof-card teal-card speed-proof"><div class="proof-card-head"><svg class="card-icon" aria-hidden="true"><use href="#icon-clock"></use></svg><h3>Steady-state latency</h3></div><p>FakeAudio · AC mean · full path</p><div class="latency-legend" aria-label="Latency bar legend"><span><i class="latency-key latency-key-cpu"></i>CPU</span><span><i class="latency-key latency-key-npu"></i>NPU</span></div><div class="latency-compare"><div class="latency-row"><span>ORT / OV</span><div class="latency-bars" aria-hidden="true"><i class="latency-cpu"></i><i class="latency-npu ort-npu"></i></div><strong>135.7 → 23.54 ms</strong><em>5.8×</em></div><div class="latency-row"><span>WinML</span><div class="latency-bars" aria-hidden="true"><i class="latency-cpu"></i><i class="latency-npu winml-npu"></i></div><strong>112.5 → 23.25 ms</strong><em>4.8×</em></div></div></article>
+          <article class="proof-card green-card"><div class="proof-card-head"><svg class="card-icon" aria-hidden="true"><use href="#icon-proof"></use></svg><div><h3>CPU agreement</h3><p>max |Δp| · FP32 reference</p></div></div><strong>6.78e-05</strong></article>
+        </div>
+      </div>
+      <div class="intel-rewrite">Compiler-facing rewrite: fix the graph boundary first; a runtime flag cannot rescue an unsupported subgraph.</div>
+    </section>
+
+    <section class="slide" data-title="Precision" data-notes="The fast path is only useful when the answer stays within the CPU-reference gate. Naive FP16 everywhere destabilized the sensitive mel front-end, so we kept an FP32 precision island and made quantization conservative. Explain that an island is a deliberate high-precision region with an explicit boundary—not a silent runtime fallback. Then show how to remove the island by rewriting sensitive operators, calibrating on shipping inputs, and moving the precision boundary later in the graph." data-num="06">
+      <div class="section-heading compact-heading">
+        <div class="eyebrow">THE PRECISION LESSON</div>
+        <h2>Finding 3 · precision islands are designed boundaries</h2>
+        <p>Protect sensitive math, cross one explicit boundary, and keep the stable subgraph on the NPU.</p>
+      </div>
+      <div class="precision-flow">
+        <article class="precision-card red-card"><svg class="card-icon" aria-hidden="true"><use href="#icon-precision"></use></svg><h3>Naïve FP16 everywhere</h3><strong>mel values can destabilize<br>before Log</strong><span>fast does not mean safe</span></article>
+        <span class="flow-arrow large">→</span>
+        <article class="precision-card teal-card"><svg class="card-icon" aria-hidden="true"><use href="#icon-precision"></use></svg><h3>Precision island</h3><strong>FP32 front-end on CPU<br>NPU only after safe boundary</strong><span>deliberate exception, explicit boundary</span></article>
+        <span class="flow-arrow large teal-text">→</span>
+        <article class="precision-card green-card gate-card"><svg class="card-icon" aria-hidden="true"><use href="#icon-gate"></use></svg><h3>CPU-reference gate</h3><strong>0.00007 &lt; 0.001<br>0.0074 &lt; 0.05</strong><span>FakeAudio · TSC</span></article>
+      </div>
+      <div class="precision-map">
+        <div class="precision-map-head"><span>HOW THE ISLAND WORKS</span><strong>Keep sensitive math intact; hand the stable subgraph to the NPU.</strong></div>
+        <div class="precision-track">
+          <div class="precision-node cpu-node"><svg class="card-icon" aria-hidden="true"><use href="#icon-precision"></use></svg><div><span>CPU · FP32</span><strong>log-mel / sensitive ops</strong><small>range-safe front-end</small></div></div>
+          <div class="precision-boundary"><i></i><span><strong>EXPLICIT HANDOFF</strong><b>cast + fixed shape</b></span><i></i></div>
+          <div class="precision-node npu-node"><svg class="card-icon" aria-hidden="true"><use href="#icon-device"></use></svg><div><span>INTEL NPU · FP16 / INT8</span><strong>HTSAT backbone</strong><small>stable compiled subgraph</small></div></div>
+        </div>
+        <p class="precision-map-note"><strong>Island ≠ fallback.</strong> It is a controlled boundary with an owned transfer, a fixed profile, and a CPU-reference check.</p>
+      </div>
+      <div class="policy-heading">How to avoid the island</div>
+      <div class="policy-row">
+        <article class="policy-card blue-edge"><strong>Rewrite / fuse</strong><span>remove range-sensitive or unsupported patterns</span></article>
+        <article class="policy-card purple-edge"><strong>Calibrate in context</strong><span>use the same distribution and preprocessing as shipping</span></article>
+        <article class="policy-card amber-edge"><strong>Quantize late</strong><span>place QDQ after the sensitive boundary; reject drift</span></article>
+        <article class="ship-card"><strong>✓</strong><span>stable path</span></article>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Cold start" data-notes="Steady-state inference is only part of the user experience. We measured cold load, hot load, mean, and p90 separately. The manager-level point is simple: users feel first-use latency before they feel a 23 ms steady-state mean. Cache state and compile time are packaging decisions, not latency to hide." data-num="07">
+      <div class="section-heading compact-heading">
+        <div class="eyebrow">THE COST OF SUCCESS</div>
+        <h2>Finding 4 · cold-start is part of the product</h2>
+        <p>Users feel first-use latency before they feel a 23 ms steady-state mean.</p>
+      </div>
+      <p class="lead-note">We package first-use experience separately from the steady-state path.</p>
+      <div class="range-row">
+        <article class="range-card blue-card"><h3>FakeAudio cold load</h3><div class="range-plot cold-plot" aria-hidden="true"><i></i><i></i><i></i><i></i></div><strong>5.05–6.62 s</strong><span>all Intel NPU profiles · compile + load</span></article>
+        <article class="range-card purple-card"><h3>FakeAudio hot load</h3><div class="range-plot hot-plot" aria-hidden="true"><i></i><i></i><i></i><i></i></div><strong>0.43–5.44 s</strong><span>executor-specific cache state</span></article>
+        <article class="range-card teal-card"><h3>FakeAudio mean</h3><div class="range-plot mean-plot" aria-hidden="true"><i></i><i></i><i></i><i></i></div><strong>23.12–23.54 ms</strong><span>p90: 23.40–24.72 ms · steady state</span></article>
+      </div>
+      <div class="dark-band"><h3>What we changed</h3><div><span><i class="dot blue"></i>measure cold and warm separately</span><span><i class="dot purple"></i>treat cache state as a packaging decision</span><span><i class="dot teal"></i>never call compile time inference latency</span></div></div>
+    </section>
+
+    <section class="slide slide-technical" data-title="Product shape" data-notes="The product shape is one modelhost executable with one shared ONNX Runtime and an explicit executor choice: auto, ORT/OpenVINO, or Windows ML. Model loading, proof, and executor selection now live behind one product contract. The proof gates are part of the contract." data-num="08">
+      <div class="section-heading compact-heading">
+        <div class="eyebrow">THE PRODUCT SHAPE</div>
+        <h2>From research result to one product execution path</h2>
+        <p>One host owns model loading, proof, and the explicit ORT / Windows ML choice.</p>
+      </div>
+      <div class="architecture">
+        <div class="model-column"><div class="arch-label">MODEL PROFILES</div><div class="model-pill blue-edge"><span class="node-dot"></span>FakeAudio</div><div class="model-pill purple-edge"><span class="node-dot"></span>TSC</div><div class="model-pill teal-edge"><span class="node-dot"></span>Whisper static</div></div>
+        <span class="arch-arrow">→</span>
+        <article class="host-box"><svg class="card-icon" aria-hidden="true"><use href="#icon-host"></use></svg><code>model_host.exe</code><strong>one executable</strong><span>auto&nbsp; | &nbsp;ort&nbsp; | &nbsp;windowsml</span><small>same model contract</small></article>
+        <span class="arch-arrow">→</span>
+        <div class="executor-column"><div class="arch-label">EXECUTOR CHOICE</div><article class="executor-card purple-edge"><svg class="card-icon" aria-hidden="true"><use href="#icon-operators"></use></svg><strong>ORT executor</strong><code>OpenVINO EP → Intel NPU</code></article><article class="executor-card teal-edge"><svg class="card-icon" aria-hidden="true"><use href="#icon-device"></use></svg><strong>Windows ML executor</strong><code>Intel NPU device</code></article><div class="intel-target">Intel NPU</div></div>
+      </div>
+      <p class="contract-claim">The product contract: one shared runtime + explicit proof</p>
+      <div class="proof-strip"><article class="proof-tile blue-edge"><svg class="card-icon" aria-hidden="true"><use href="#icon-device"></use></svg><div><strong>Assigned ops</strong><span>expected work is on NPU</span></div></article><article class="proof-tile purple-edge"><svg class="card-icon" aria-hidden="true"><use href="#icon-proof"></use></svg><div><strong>CPU agreement</strong><span>max |Δp| stays in tolerance</span></div></article><article class="proof-tile teal-edge"><svg class="card-icon" aria-hidden="true"><use href="#icon-clock"></use></svg><div><strong>Cold / warm</strong><span>compile and cache are visible</span></div></article></div>
+      <div class="bottom-claim">One modelhost. One shared ONNX Runtime. Runtime choice is deliberate, observable and testable.</div>
+    </section>
+
+    <section class="slide" data-title="Scorecard" data-notes="This is the capability scorecard: three static benchmark profiles have an Intel NPU execution path. The qualification is specific: assignment, numerical agreement, and timing. This is the difference between a demo and a product capability. Dynamic Whisper KV remains outside the static NPU profile." data-num="09">
+      <div class="section-heading compact-heading">
+        <div class="eyebrow">THE PROOF</div>
+        <h2>Three profiles pass the same three gates</h2>
+        <p>This is the difference between a demo and a product capability.</p>
+      </div>
+      <div class="score-grid">
+        <article class="score-card blue-card"><div class="score-head"><svg class="card-icon" aria-hidden="true"><use href="#icon-device"></use></svg><span>PROFILE 01 · SPLIT GRAPH</span></div><h3>FakeAudio</h3><p>CPU FP32 front-end + Intel NPU backbone</p><div class="score-metrics"><strong>584/584<small>ops on NPU</small></strong><strong>6.78e-05<small>max |Δp| vs CPU</small></strong></div><code>23.12–23.54 ms mean backbone</code><div class="score-gates"><span>ASSIGN</span><span>AGREE</span><span>TIME</span></div><span class="qualified">QUALIFIED · gate 1e-3</span></article>
+        <article class="score-card purple-card"><div class="score-head"><svg class="card-icon" aria-hidden="true"><use href="#icon-operators"></use></svg><span>PROFILE 02 · WHOLE GRAPH</span></div><h3>Text Scam Classifier</h3><p>Intel NPU whole-graph profile · 245 NPU ops · 0 CPU ops</p><div class="score-metrics"><strong>0.00738<small>WinML AC max |Δp|</small></strong><strong>0.05<small>allowed drift</small></strong></div><code>7.78–8.64 ms mean NPU inference</code><div class="score-gates"><span>ASSIGN</span><span>AGREE</span><span>TIME</span></div><span class="qualified">QUALIFIED · gate 0.05</span></article>
+        <article class="score-card teal-card"><div class="score-head"><svg class="card-icon" aria-hidden="true"><use href="#icon-clock"></use></svg><span>PROFILE 03 · STATIC ASR</span></div><h3>Whisper tiny.en static</h3><p>Windows ML · 5.855 s clip · AC</p><div class="score-metrics"><strong>205.6 ms<small>mean NPU inference</small></strong><strong>28.48×<small>realtime</small></strong></div><code>AC · 112.74 tok/s · 8.88 ms/token</code><div class="score-gates"><span>ASSIGN</span><span>MEASURE</span><span>TIME</span></div><span class="qualified">QUALIFIED · NPU path</span></article>
+      </div>
+      <div class="score-summary"><strong>3 / 3</strong><span>benchmark profiles have an Intel NPU execution path</span><small>Dynamic Whisper KV is outside the NPU profile; static export is the supported contract.</small></div>
+      <p class="footnote">Ground-truth check: TSC 14/15 · FakeAudio 3/5. Numerical gates are versus the CPU reference, not ground truth.</p>
+    </section>
+
+    <section class="slide timing-slide" data-title="Timing matrix · AC" data-notes="Read the matrix as a ledger, not as a single winner. On AC, NPU is the low-latency path for TSC and FakeAudio; static Whisper exposes executor-specific behavior. Startup is measured in seconds, so cache state belongs in the product contract. The matrix includes CPU, GPU, NPU mean inference, NPU cold/load, hot/warm, p50/p90, and the ASR decode tail." data-num="10">
+      <div class="section-heading timing-heading">
+        <div class="eyebrow">THE PERFORMANCE · AC</div>
+        <h2>AC · steady-state win, startup trade-off</h2>
+        <p>Classifiers favor NPU; static Whisper exposes executor-specific behavior.</p>
+        <span class="floating-pill">AC · INFERENCE + STARTUP + DECODE</span>
+      </div>
+      <div class="timing-legend" aria-label="Timing matrix legend"><span><i class="legend-swatch cpu-swatch"></i>CPU mean</span><span><i class="legend-swatch gpu-swatch"></i>GPU mean</span><span><i class="legend-swatch npu-swatch"></i>NPU mean</span><span><i class="legend-swatch startup-swatch"></i>cold / warm</span><span class="legend-note">bar length compares paths within each row</span></div>
+      <div class="table-wrap"><table class="timing-table"><thead><tr><th>MODEL / EXECUTOR</th><th>CPU<br>MEAN</th><th>GPU<br>MEAN</th><th>NPU<br>MEAN</th><th>NPU COLD<br>/ LOAD</th><th>NPU HOT<br>/ WARM</th><th>P50 / P90 · RTF</th></tr></thead><tbody>
+        <tr class="purple-row"><th>TSC<br>ORT / OpenVINO</th><td>294.3 ms</td><td>44.2 ms</td><td>8.53 ms</td><td>6.71 / 6.72 s</td><td>0.53 / — s</td><td>8.30 / 9.67 ms</td></tr>
+        <tr class="purple-row"><th>TSC<br>Windows ML</th><td>217.1 ms</td><td>41.8 ms</td><td>8.64 ms</td><td>4.35 / 4.34 s</td><td>4.31 / — s</td><td>8.33 / 8.57 ms</td></tr>
+        <tr class="blue-row"><th>FakeAudio<br>ORT / OpenVINO</th><td>135.7 ms</td><td>53.4 ms</td><td>23.54 ms</td><td>5.68 / 5.65 s</td><td>0.43 / — s</td><td>23.46 / 24.20 ms</td></tr>
+        <tr class="blue-row"><th>FakeAudio<br>Windows ML</th><td>112.5 ms</td><td>46.7 ms</td><td>23.25 ms</td><td>5.05 / 4.81 s</td><td>4.40 / — s</td><td>22.79 / 23.51 ms</td></tr>
+        <tr class="teal-row"><th>Whisper static<br>ORT / OpenVINO</th><td>2,602 ms</td><td>672 ms</td><td>786 ms</td><td>15.84 / — s</td><td>0.95 / 0.95 s</td><td>— · 7.45×</td></tr>
+        <tr class="teal-row"><th>Whisper static<br>Windows ML</th><td>1,607 ms</td><td>557 ms</td><td>206 ms</td><td>8.46 / — s</td><td>7.29 / 7.29 s</td><td>— · 28.48×</td></tr>
+        <tr class="amber-row"><th>Whisper dynamic<br>ORT</th><td>1,621 ms</td><td>359 ms</td><td>—</td><td>— / — s</td><td>— / — s</td><td>— · 3.61 / 16.33×</td></tr>
+        <tr class="amber-row"><th>Whisper dynamic<br>Windows ML</th><td>212 ms</td><td>335 ms</td><td>—</td><td>— / — s</td><td>— / — s</td><td>— · 27.62 / 17.50×</td></tr>
+      </tbody></table></div>
+      <div class="matrix-takeaway"><strong>WHAT TO NOTICE</strong><span>NPU is the low-latency path for TSC and FakeAudio; static Whisper depends on executor choice. Startup is a seconds-scale product trade-off.</span></div>
+      <div class="table-notes"><p>Mean inference + classifier p50/p90: ms. NPU COLD / LOAD + HOT / WARM: s.</p><p>LOAD = classifier load_seconds; ASR has no standalone load. RTF = static NPU / dynamic CPU / GPU. 10 ASR / 20 classifier runs. — = unavailable.</p><div class="decode-note">STATIC decode · tok/s CPU/GPU/NPU — ORT 8.63/30.99/30.96 · WinML 12.39/41.06/112.74<br>STATIC decode · ms/token CPU/GPU/NPU — ORT 115.93/33.66/32.50 · WinML 82.10/24.36/8.88<br>DYNAMIC decode · TTFT ms CPU/GPU — ORT 1023/91 · WinML 141/88<br>DYNAMIC decode · tok/s CPU/GPU — ORT 14.99/64.13 · WinML 102.63/68.72 | ms/token — ORT 67.45/15.62 · WinML 9.74/14.55</div></div>
+    </section>
+
+    <section class="slide timing-slide" data-title="Timing matrix · battery" data-notes="Battery mode preserves the NPU advantage on the static profiles, while first-use cache cost remains visible. The same proof discipline applies: show the numbers, keep AC and battery separate, and do not present dynamic Whisper as an NPU result." data-num="11">
+      <div class="section-heading timing-heading">
+        <div class="eyebrow">THE PERFORMANCE · BATTERY</div>
+        <h2>Battery · the NPU advantage survives</h2>
+        <p>Static profiles still favor NPU; first-use cache cost remains visible.</p>
+        <span class="floating-pill purple-pill">BATTERY · INFERENCE + STARTUP + DECODE</span>
+      </div>
+      <div class="timing-legend" aria-label="Timing matrix legend"><span><i class="legend-swatch cpu-swatch"></i>CPU mean</span><span><i class="legend-swatch gpu-swatch"></i>GPU mean</span><span><i class="legend-swatch npu-swatch"></i>NPU mean</span><span><i class="legend-swatch startup-swatch"></i>cold / warm</span><span class="legend-note">bar length compares paths within each row</span></div>
+      <div class="table-wrap"><table class="timing-table"><thead><tr><th>MODEL / EXECUTOR</th><th>CPU<br>MEAN</th><th>GPU<br>MEAN</th><th>NPU<br>MEAN</th><th>NPU COLD<br>/ LOAD</th><th>NPU HOT<br>/ WARM</th><th>P50 / P90 · RTF</th></tr></thead><tbody>
+        <tr class="purple-row"><th>TSC<br>ORT / OpenVINO</th><td>220.9 ms</td><td>38.0 ms</td><td>7.78 ms</td><td>8.06 / 8.39 s</td><td>0.73 / — s</td><td>7.61 / 7.87 ms</td></tr>
+        <tr class="purple-row"><th>TSC<br>Windows ML</th><td>187.2 ms</td><td>37.7 ms</td><td>8.30 ms</td><td>5.06 / 5.20 s</td><td>5.12 / — s</td><td>8.17 / 8.34 ms</td></tr>
+        <tr class="blue-row"><th>FakeAudio<br>ORT / OpenVINO</th><td>121.6 ms</td><td>73.3 ms</td><td>23.12 ms</td><td>6.62 / 6.73 s</td><td>0.52 / — s</td><td>22.79 / 23.40 ms</td></tr>
+        <tr class="blue-row"><th>FakeAudio<br>Windows ML</th><td>102.5 ms</td><td>71.5 ms</td><td>23.26 ms</td><td>5.60 / 5.88 s</td><td>5.44 / — s</td><td>22.82 / 24.72 ms</td></tr>
+        <tr class="teal-row"><th>Whisper static<br>ORT / OpenVINO</th><td>2,261 ms</td><td>670 ms</td><td>520 ms</td><td>15.53 / — s</td><td>1.20 / 1.20 s</td><td>— · 11.26×</td></tr>
+        <tr class="teal-row"><th>Whisper static<br>Windows ML</th><td>889 ms</td><td>671 ms</td><td>291 ms</td><td>8.88 / — s</td><td>8.78 / 8.78 s</td><td>— · 20.13×</td></tr>
+        <tr class="amber-row"><th>Whisper dynamic<br>ORT</th><td>1,562 ms</td><td>604 ms</td><td>—</td><td>— / — s</td><td>— / — s</td><td>— · 3.75 / 9.69×</td></tr>
+        <tr class="amber-row"><th>Whisper dynamic<br>Windows ML</th><td>206 ms</td><td>500 ms</td><td>—</td><td>— / — s</td><td>— / — s</td><td>— · 28.41 / 11.70×</td></tr>
+      </tbody></table></div>
+      <div class="matrix-takeaway battery-takeaway"><strong>WHAT TO NOTICE</strong><span>Battery preserves the NPU advantage on every static profile; the remaining product question is first-use cache cost.</span></div>
+      <div class="table-notes"><p>Mean inference + classifier p50/p90: ms. NPU COLD / LOAD + HOT / WARM: s.</p><p>LOAD = classifier load_seconds; ASR has no standalone load. RTF = static NPU / dynamic CPU / GPU. 10 ASR / 20 classifier runs. — = unavailable.</p><div class="decode-note">STATIC decode · tok/s CPU/GPU/NPU — ORT 7.93/30.72/42.78 · WinML 26.03/30.35/81.53<br>STATIC decode · ms/token CPU/GPU/NPU — ORT 136.46/32.72/23.38 · WinML 38.46/33.34/12.27<br>DYNAMIC decode · TTFT ms CPU/GPU — ORT 945/142 · WinML 127/120<br>DYNAMIC decode · tok/s CPU/GPU — ORT 16.83/37.21 · WinML 116.77/42.15 | ms/token — ORT 60.64/26.92 · WinML 8.59/23.76</div></div>
+    </section>
+
+    <section class="slide slide-technical" data-title="Playbook" data-notes="The reusable asset is the loop: define a profile, make it compile, prove the result, and package the choice. This is how a one-off benchmark became a product capability—and how the next model can enter the same process without starting from zero." data-num="12">
+      <div class="section-heading compact-heading">
+        <div class="eyebrow">THE PLAYBOOK</div>
+        <h2>The work became a repeatable delivery loop</h2>
+        <p>Future models enter the same contract → compile → prove → package path.</p>
+      </div>
+      <div class="playbook-grid">
+        <article class="playbook-card blue-card"><div class="play-head"><span class="play-number">01</span><svg class="card-icon" aria-hidden="true"><use href="#icon-shape"></use></svg></div><h3>Define the profile</h3><p>Turn runtime assumptions into a fixed NPU contract.</p><div class="play-detail"><strong>Static export</strong><span>pin shapes and cache dimensions</span></div><div class="play-detail"><strong>FP32 island</strong><span>protect sensitive front-end math</span></div></article>
+        <article class="playbook-card purple-card"><div class="play-head"><span class="play-number">02</span><svg class="card-icon" aria-hidden="true"><use href="#icon-operators"></use></svg></div><h3>Make it compile</h3><p>Keep the graph inside Intel’s supported compiler vocabulary.</p><div class="play-detail"><strong>Graph boundary</strong><span>keep the NPU subgraph clean</span></div><div class="play-detail"><strong>Attention rewrite</strong><span>remove the compiler failure</span></div></article>
+        <article class="playbook-card teal-card"><div class="play-head"><span class="play-number">03</span><svg class="card-icon" aria-hidden="true"><use href="#icon-package"></use></svg></div><h3>Make it repeatable</h3><p>Make proof and executor choice part of the product artifact.</p><div class="play-detail"><strong>CPU-reference gate</strong><span>prove the answer still agrees</span></div><div class="play-detail"><strong>Cold/warm + host</strong><span>package one deliberate choice</span></div></article>
+      </div>
+      <div class="playbook-claim">The reusable asset is the loop: <strong>contract</strong>&nbsp; → &nbsp;<strong>compile</strong>&nbsp; → &nbsp;<strong>prove</strong>&nbsp; → &nbsp;<strong>package</strong>.</div>
+    </section>
+
+    <section class="slide slide-dark end-state-slide" data-title="End state" data-notes="Close on the product state, not only the NPU result. The three static model profiles are available through both executor choices on CPU, GPU and Intel NPU. Whisper needs one deployment policy: install the static profile when an Intel NPU is present; install the dynamic profile without an NPU because static Whisper is slower on CPU and GPU. The product remains one modelhost with one ONNX Runtime contract and an explicit executor choice." data-num="13">
+      <div class="end-state-shell">
+        <div class="end-state-heading"><div class="eyebrow eyebrow-light">THE END STATE</div><h2>One modelhost.<br>Every execution path.</h2><p>Three model profiles × two executors × three device targets.</p></div>
+        <div class="end-state-contract"><svg class="card-icon" aria-hidden="true"><use href="#icon-host"></use></svg><div><span>PRODUCT CONTRACT</span><strong>one modelhost · one ONNX Runtime · choose ORT or Windows ML</strong></div></div>
+        <div class="end-state-kpis"><article><strong>3</strong><span>model profiles</span><small>FakeAudio · TSC · Whisper static</small></article><article><strong>2</strong><span>executors</span><small>ORT · Windows ML</small></article><article><strong>3</strong><span>device targets</span><small>CPU · GPU · Intel NPU</small></article></div>
+        <div class="coverage-block"><div class="coverage-block-head"><span>CAPABILITY COVERAGE</span><strong>Every checkmark is available through both executors.</strong><div class="executor-legend"><b>ORT</b><b>WINDOWS ML</b></div></div><div class="coverage-matrix"><div class="coverage-corner">PROFILE</div><div class="coverage-axis">CPU</div><div class="coverage-axis">GPU</div><div class="coverage-axis">NPU</div><div class="coverage-label"><span>01</span><strong>FakeAudio</strong></div><div class="coverage-cell"><strong>✓</strong></div><div class="coverage-cell"><strong>✓</strong></div><div class="coverage-cell"><strong>✓</strong></div><div class="coverage-label"><span>02</span><strong>Text Scam Classifier</strong></div><div class="coverage-cell"><strong>✓</strong></div><div class="coverage-cell"><strong>✓</strong></div><div class="coverage-cell"><strong>✓</strong></div><div class="coverage-label"><span>03</span><strong>Whisper static</strong></div><div class="coverage-cell"><strong>✓</strong></div><div class="coverage-cell"><strong>✓</strong></div><div class="coverage-cell"><strong>✓</strong></div></div></div>
+        <div class="whisper-policy"><div class="whisper-policy-head"><span>WHISPER DEPLOYMENT RULE</span><strong>Static is the NPU profile; dynamic is the no-NPU profile.</strong></div><div class="whisper-policy-body"><article class="whisper-route npu-route"><svg class="card-icon" aria-hidden="true"><use href="#icon-device"></use></svg><div><span>INTEL NPU PRESENT</span><strong>install static</strong><small>compiled NPU path · 206 ms AC / WinML</small></div></article><div class="whisper-otherwise">otherwise</div><article class="whisper-route cpu-route"><svg class="card-icon" aria-hidden="true"><use href="#icon-operators"></use></svg><div><span>NPU ABSENT</span><strong>install dynamic</strong><small>avoid static CPU/GPU pessimization</small></div></article><div class="whisper-proof"><span>AC · Windows ML · Whisper</span><strong>CPU&nbsp; 1,607 → 212 ms</strong><strong>GPU&nbsp; 557 → 335 ms</strong><small>static → dynamic</small></div></div></div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="notes-panel" id="notes-panel" aria-hidden="true">
+    <div class="notes-head"><span>Speaker notes</span><button id="close-notes" type="button" aria-label="Close notes">×</button></div>
+    <p id="notes-copy"></p>
+  </aside>
+
+  <nav class="deck-controls" aria-label="Slide navigation">
+    <button class="nav-button" id="prev-button" type="button" title="Previous slide (ArrowLeft)">←</button>
+    <div class="progress-wrap"><div class="progress-track"><div class="progress-bar" id="progress-bar"></div></div><span id="progress-title">Intel NPU</span></div>
+    <button class="nav-button" id="next-button" type="button" title="Next slide (ArrowRight)">→</button>
+  </nav>
+
+  <div class="help-hint">Use <kbd>←</kbd> <kbd>→</kbd> or click either side of the page · <kbd>F</kbd> fullscreen · <kbd>N</kbd> notes</div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
