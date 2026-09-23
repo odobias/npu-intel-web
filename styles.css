@@ -364,3 +364,22 @@ button { font: inherit; }
     justify-content: center;
   }
 }
+
+/* Desktop title rail: keep the body balanced, but give every standard slide a shared heading baseline. */
+@media screen and (min-width: 901px) {
+  .slide[data-num="02"] > .section-heading,
+  .slide[data-num="03"] > .section-heading,
+  .slide[data-num="05"] > .section-heading,
+  .slide[data-num="06"] > .section-heading,
+  .slide[data-num="07"] > .section-heading,
+  .slide[data-num="08"] > .section-heading,
+  .slide[data-num="09"] > .section-heading,
+  .slide[data-num="10"] > .section-heading,
+  .slide[data-num="11"] > .section-heading,
+  .slide[data-num="12"] > .section-heading {
+    position: absolute;
+    top: 5.25rem;
+    left: 5cqw;
+    right: 5cqw;
+  }
+}
