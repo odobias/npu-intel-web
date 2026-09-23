@@ -34,22 +34,25 @@
 
   const enhanceTimingTables = () => {
     document.querySelectorAll('.timing-table').forEach((table) => {
-      table.querySelectorAll('tbody tr').forEach((row) => {
+      const rows = [...table.querySelectorAll('tbody tr')];
+      const meanMax = Math.max(0, ...rows.flatMap((row) => [...row.cells].slice(1, 4).flatMap((cell) => timingValues(cell.textContent))));
+      const startupMax = Math.max(0, ...rows.flatMap((row) => [...row.cells].slice(4, 6).flatMap((cell) => timingValues(cell.textContent))));
+      const tailMax = Math.max(0, ...rows.flatMap((row) => timingValues(row.cells[6]?.textContent || '')));
+
+      rows.forEach((row) => {
         const cells = [...row.cells];
         const meanCells = cells.slice(1, 4);
         const meanValues = meanCells.map((cell) => timingValues(cell.textContent));
-        const meanMax = Math.max(0, ...meanValues.flat());
         meanCells.forEach((cell, index) => decorateTimingCell(cell, `mean-cell mean-${index}`, ['#5865f2', '#7443ee', '#0e8f68'][index], meanValues[index], meanMax));
 
         const startupCells = cells.slice(4, 6);
         const startupValues = startupCells.map((cell) => timingValues(cell.textContent));
-        const startupMax = Math.max(0, ...startupValues.flat());
         startupCells.forEach((cell, index) => decorateTimingCell(cell, `startup-cell startup-${index}`, '#c2730d', startupValues[index], startupMax));
 
         const tailCell = cells[6];
         if (tailCell) {
           const tailValues = timingValues(tailCell.textContent);
-          decorateTimingCell(tailCell, 'tail-cell', '#0e8f68', tailValues, Math.max(0, ...tailValues));
+          decorateTimingCell(tailCell, 'tail-cell', '#0e8f68', tailValues, tailMax);
         }
 
         const labelCell = cells[0];
